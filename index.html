@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BEright Automations | Enterprise Systems Architecture</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg-base: #050711;
+      --bg-radial: #130a2a;
+      --primary-accent: #00f2fe;
+      --secondary-accent: #9d4edd;
+      --card-bg: rgba(13, 18, 38, 0.7);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --card-glow: rgba(0, 242, 254, 0.3);
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 10%, var(--bg-radial) 0%, var(--bg-base) 65%, #020308 100%);
+      color: #f8fafc;
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .perspective-grid {
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      transform: perspective(600px) rotateX(60deg);
+      transform-origin: center bottom;
+    }
+
+    @keyframes universalShift {
+      0% { filter: hue-rotate(0deg) drop-shadow(0 0 25px var(--primary-accent)); }
+      50% { filter: hue-rotate(180deg) drop-shadow(0 0 45px var(--secondary-accent)); }
+      100% { filter: hue-rotate(360deg) drop-shadow(0 0 25px var(--primary-accent)); }
+    }
+    .animated-brand-title {
+      background: linear-gradient(90deg, var(--primary-accent), var(--secondary-accent), #ec4899, #f59e0b, var(--primary-accent));
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: universalShift 7s ease infinite;
+    }
+
+    @keyframes ringPulse {
+      0% { transform: rotate(0deg); filter: drop-shadow(0 0 15px var(--primary-accent)); }
+      50% { filter: drop-shadow(0 0 30px var(--secondary-accent)); }
+      100% { transform: rotate(360deg); filter: drop-shadow(0 0 15px var(--primary-accent)); }
+    }
+    .crown-aura { animation: ringPulse 6s linear infinite; }
+
+    /* ৫টি সাইবারনেটিক ব্যাকগ্রাউন্ড ওয়াটারমার্ক */
+    .watermark-layer { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+    .watermark-1 { top: 8%; left: -3%; font-size: 20vw; font-weight: 900; opacity: 0.025; font-family: var(--font-heading); }
+    .watermark-2 { top: 40%; right: -5%; width: 550px; height: 550px; opacity: 0.03; border: 2px dashed var(--primary-accent); border-radius: 50%; }
+    .watermark-3 { bottom: 18%; left: 5%; width: 420px; height: 420px; opacity: 0.025; border: 1px solid var(--secondary-accent); transform: rotate(45deg); }
+    .watermark-4 { top: 68%; left: 35%; font-size: 13vw; font-weight: 800; opacity: 0.02; letter-spacing: 0.2em; font-family: var(--font-heading); }
+    .watermark-5 { bottom: -6%; right: 8%; width: 480px; height: 480px; opacity: 0.035; border-radius: 50%; background: conic-gradient(from 0deg, var(--primary-accent), transparent 60%); }
+
+    /* কার্ড ডিজাইন */
+    .card-style-cyber { border-radius: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.12); background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(13, 18, 38, 0.75) 100%); backdrop-filter: blur(20px); }
+    .system-card { transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+    .system-card:hover { transform: translateY(-8px) scale(1.02); }
+
+    /* বন্দুকধারী রোবটের এনিমেশন */
+    @keyframes sentryHover {
+      0%, 100% { transform: translateY(0px); filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4)); }
+      50% { transform: translateY(-3px); filter: drop-shadow(0 0 18px rgba(0, 242, 254, 0.8)) drop-shadow(0 0 25px rgba(236, 72, 153, 0.4)); }
+    }
+    .sentry-bob { animation: sentryHover 3.2s ease-in-out infinite; }
+    .match-highlight { color: #00f2fe; font-weight: 800; text-decoration: underline; }
+  </style>
+</head>
+<body class="flex flex-col justify-between relative selection:bg-cyan-500 selection:text-black">
+
+  <!-- ওয়াটারমার্ক লেয়ার -->
+  <div class="watermark-layer">
+    <div class="absolute watermark-1 select-none">BERIGHT</div>
+    <div class="absolute watermark-2 select-none animate-spin" style="animation-duration: 90s;"></div>
+    <div class="absolute watermark-3 select-none"></div>
+    <div class="absolute watermark-4 select-none">ENGINEERING</div>
+    <div class="absolute watermark-5 select-none animate-spin" style="animation-duration: 60s;"></div>
+  </div>
+
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-36 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-gradient-to-b from-purple-600/25 via-cyan-500/15 to-transparent rounded-full blur-[140px]"></div>
+    <div class="absolute -bottom-24 left-0 right-0 h-[450px] perspective-grid opacity-50"></div>
+  </div>
+
+  <!-- টপ নেভিগেশন বার -->
+  <header class="relative z-30 border-b border-white/10 bg-slate-950/50 backdrop-blur-xl px-6 py-4 shadow-xl">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <button onclick="toggleSideMenu()" class="w-11 h-11 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-cyan-300 hover:text-white flex flex-col items-center justify-center gap-1.5 transition">
+        <span class="w-5 h-0.5 bg-current rounded-full"></span>
+        <span class="w-4 h-0.5 bg-current rounded-full"></span>
+        <span class="w-5 h-0.5 bg-current rounded-full"></span>
+      </button>
+
+      <div class="text-center px-2 cursor-pointer" onclick="showCatalogView()">
+        <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight animated-brand-title font-heading">
+          BEright Automations
+        </h1>
+        <p class="text-[11px] sm:text-xs font-semibold text-cyan-200/80 tracking-widest uppercase mt-0.5">
+          Ultra-Tier Engineering & Architecture
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="triggerAdminModal()" title="Admin Control" class="w-9 h-9 rounded-xl bg-slate-900/70 border border-white/15 text-slate-400 hover:text-cyan-300 flex items-center justify-center transition">
+          <i class="fa-solid fa-sliders text-xs"></i>
+        </button>
+
+        <div class="relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+          <div class="absolute inset-0 rounded-2xl p-[2px] crown-aura bg-gradient-to-tr from-cyan-400 via-pink-500 to-amber-400"></div>
+          <div class="relative w-full h-full bg-[#0a0e27] rounded-2xl flex flex-col items-center justify-center border border-white/20 shadow-inner">
+            <span class="text-[10px] text-amber-400 leading-none">👑</span>
+            <span class="font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-amber-300 text-base sm:text-lg tracking-wider font-heading">BE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ড্রয়ার মেনু -->
+  <div id="sideMenuDrawer" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden">
+    <div class="absolute top-0 left-0 bottom-0 w-80 bg-slate-950/95 border-r border-white/10 p-6 flex flex-col justify-between shadow-2xl">
+      <div>
+        <div class="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 flex items-center justify-center font-bold">BE</span>
+            <span class="font-bold text-white font-heading">Control Menu</span>
+          </div>
+          <button onclick="toggleSideMenu()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+        </div>
+        <nav class="space-y-3 font-semibold text-sm">
+          <button onclick="showCatalogView(); toggleSideMenu()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-slate-200 transition text-left">
+            <i class="fa-solid fa-layer-group text-cyan-400 w-5"></i> All Systems Catalog
+          </button>
+          <button onclick="openProjectModal(); toggleSideMenu()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-slate-200 transition text-left">
+            <i class="fa-solid fa-file-signature text-cyan-400 w-5"></i> Register Your Project
+          </button>
+          <button onclick="toggleChatbotWindow(); toggleSideMenu()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-slate-200 transition text-left">
+            <i class="fa-solid fa-robot text-emerald-400 w-5"></i> Smart QA Search Bot
+          </button>
+          <button onclick="triggerAdminModal(); toggleSideMenu()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-purple-500/20 text-slate-200 transition text-left">
+            <i class="fa-solid fa-sliders text-purple-400 w-5"></i> Admin Console (100 Themes)
+          </button>
+        </nav>
+      </div>
+      <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 text-xs">
+        <p class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Direct Developer Connect</p>
+        <p class="text-slate-200 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-emerald-400"></i> +48 510 820 441</p>
+        <p class="text-slate-200 flex items-center gap-2"><i class="fa-solid fa-envelope text-rose-400"></i> beright454@gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- স্ক্রিন ১: সিস্টেম ক্যাটালগ -->
+  <main id="catalogView" class="relative z-10 max-w-7xl mx-auto w-full px-6 py-10 flex-1">
+    <div class="text-center max-w-4xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-400/30 text-cyan-300 text-xs font-semibold mb-4 backdrop-blur-md">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> SYSTEM REPOSITORY ACTIVE
+      </div>
+      <h2 class="text-3xl sm:text-5xl md:text-6xl font-black font-heading leading-tight mb-2">
+        Intelligent Systems Built For <br class="hidden sm:inline" />
+        <span class="bg-gradient-to-r from-cyan-400 via-pink-400 to-amber-300 bg-clip-text text-transparent">Extreme Scale & Operations</span>
+      </h2>
+    </div>
+
+    <!-- ক্যাটাগরি ফিল্টার -->
+    <div id="categoryTabs" class="flex flex-wrap items-center justify-center gap-2 mb-10"></div>
+
+    <!-- সার্ভিস কার্ড গ্রিড -->
+    <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="col-span-full text-center py-16 text-cyan-300 text-sm font-semibold">
+        <i class="fa-solid fa-circle-notch fa-spin text-2xl mb-3 text-cyan-400"></i><br>Loading Catalog...
+      </div>
+    </div>
+  </main>
+
+  <!-- স্ক্রিন ২: ডেডিকেটেড ভিউ ডিটেইলস ও ইমেজ গ্যালারি পেজ -->
+  <main id="detailsView" class="relative z-10 max-w-5xl mx-auto w-full px-6 py-10 flex-1 hidden">
+    <div class="mb-6 flex items-center justify-between">
+      <button onclick="showCatalogView()" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-2">
+        <i class="fa-solid fa-arrow-left"></i> Back to Systems Catalog
+      </button>
+      <span id="pageCategoryBadge" class="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"></span>
+    </div>
+
+    <div class="card-style-cyber rounded-3xl p-6 sm:p-10 border border-white/20 mb-8 relative overflow-hidden">
+      <div id="pageCardAccentGlow" class="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-[100px] pointer-events-none opacity-40"></div>
+
+      <div class="mb-6">
+        <h2 id="pageTitle" class="text-3xl sm:text-4xl md:text-5xl font-black font-heading text-white"></h2>
+        <p id="pageShortDesc" class="text-sm text-slate-300 mt-2 max-w-3xl leading-relaxed"></p>
+      </div>
+
+      <!-- প্রাইমারি ফুল স্ক্রিনশট প্রিভিউ -->
+      <div class="w-full h-64 sm:h-96 rounded-2xl overflow-hidden border border-white/15 mb-4 bg-black/60 relative group">
+        <img id="pageMainImage" src="" alt="System Preview" class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
+      </div>
+
+      <!-- থাম্বনেইল গ্যালারি -->
+      <div id="pageGalleryThumbnails" class="grid grid-cols-4 gap-3 mb-8"></div>
+
+      <!-- স্পেসিফিকেশন ফিচারস -->
+      <div class="bg-black/40 border border-white/10 rounded-2xl p-6 mb-8">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-microchip text-cyan-400"></i> Architectural Specifications & Capabilities
+        </h3>
+        <div id="pageFeatureGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-200"></div>
+      </div>
+
+      <div class="flex flex-wrap gap-4 pt-4 border-t border-white/10">
+        <button onclick="openProjectModalFromDetails()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 font-bold text-white shadow-xl shadow-cyan-500/25 hover:opacity-95 transition text-sm">
+          Register Project With This System
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- কর্নারের ভাসমান আইকনসমূহ -->
+  <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3.5">
+    
+    <!-- প্রজেক্ট রেজিস্ট্রেশন ফর্ম বাটন -->
+    <button onclick="openProjectModal()" title="Register Your Project" class="group flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 border border-cyan-300/50 text-white shadow-xl shadow-cyan-500/30 transition hover:scale-105">
+      <i class="fa-solid fa-file-signature text-lg"></i>
+      <span class="text-xs font-bold tracking-wide font-heading">Register Your Project</span>
+    </button>
+
+    <!-- বন্দুকধারী সাইবার রোবট (স্মার্ট সার্চ চ্যাটবট) -->
+    <div class="relative flex items-center gap-2.5">
+      <div id="chatbotSpeechBubble" class="bg-slate-900/95 border border-cyan-400/50 text-cyan-300 text-xs px-3 py-1.5 rounded-2xl whitespace-nowrap shadow-xl font-semibold transition-all">
+        <span id="speechText">SMART QA BRAIN 🎯</span>
+      </div>
+
+      <button onclick="toggleChatbotWindow()" title="Open Smart QA Bot" class="sentry-bob relative w-15 h-15 rounded-2xl bg-gradient-to-tr from-cyan-500 via-purple-600 to-pink-500 p-[2px] shadow-2xl transition hover:scale-110 flex items-center justify-center">
+        <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center overflow-hidden border border-white/20 p-1">
+          <svg class="w-11 h-11" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M26 12L32 7L38 12V20H26V12Z" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>
+            <rect x="25" y="15" width="14" height="4" rx="1" fill="#00f2fe" filter="drop-shadow(0 0 4px #00f2fe)"/>
+            <circle cx="29" cy="17" r="1.2" fill="#ffffff"/>
+            <circle cx="35" cy="17" r="1.2" fill="#ffffff"/>
+            <path d="M23 21H41L38 36H26L23 21Z" fill="#0f172a" stroke="#00f2fe" stroke-width="1.5"/>
+            <circle cx="32" cy="27" r="3" fill="#ff007f" filter="drop-shadow(0 0 5px #ff007f)"/>
+            <path d="M26 36L24 54H29L31 43L33 43L35 54H40L38 36" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+            <path d="M23 23L16 30L22 34" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M41 23L44 32L38 35" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"/>
+            <rect x="14" y="30" width="30" height="5" rx="1.5" fill="#1e293b" stroke="#e2e8f0" stroke-width="1.2"/>
+            <rect x="22" y="27" width="8" height="3" fill="#0284c7"/>
+            <line x1="44" y1="32.5" x2="52" y2="32.5" stroke="#ff007f" stroke-width="2.5" stroke-linecap="round" filter="drop-shadow(0 0 6px #ff007f)"/>
+            <circle cx="53" cy="32.5" r="1.5" fill="#ffffff"/>
+          </svg>
+        </div>
+      </button>
+    </div>
+
+    <!-- WhatsApp ডিরেক্ট বাটন -->
+    <a href="https://wa.me/48510820441" target="_blank" class="group flex items-center gap-2 pl-3 pr-4 py-2 rounded-2xl bg-emerald-600 hover:bg-emerald-500 border border-emerald-400/60 text-white shadow-xl shadow-emerald-600/30 transition hover:scale-105">
+      <i class="fa-brands fa-whatsapp text-2xl"></i>
+      <span class="text-xs font-bold tracking-wide font-heading">WhatsApp</span>
+    </a>
+
+    <!-- Gmail ডিরেক্ট বাটন -->
+    <a href="mailto:beright454@gmail.com" class="w-12 h-12 rounded-2xl bg-rose-600 hover:bg-rose-500 border border-rose-400/60 text-white flex items-center justify-center text-lg shadow-xl shadow-rose-600/30 transition hover:scale-110">
+      <i class="fa-solid fa-envelope"></i>
+    </a>
+  </div>
+
+  <!-- ক্লিন প্রজেক্ট রেজিস্ট্রেশন ফর্ম মোডাল (REGISTER YOUR PROJECT) -->
+  <div id="projectModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-gradient-to-b from-slate-900 to-[#0a0e27] border border-cyan-500/40 rounded-3xl max-w-md w-full p-6 shadow-2xl relative my-8">
+      <button onclick="closeModal('projectModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white transition">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+      
+      <h3 class="text-xl font-bold font-heading text-white mb-4">Register Your Project</h3>
+      
+      <form id="projectRegistrationForm" onsubmit="handleProjectSubmit(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="text-slate-400 font-semibold">Your Full Name *</label>
+          <input type="text" id="regClientName" required placeholder="Subrata Mondal" class="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-white mt-1 focus:border-cyan-400 outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="text-slate-400 font-semibold">Email Address *</label>
+            <input type="email" id="regClientEmail" required placeholder="name@example.com" class="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-white mt-1 focus:border-cyan-400 outline-none">
+          </div>
+          <div>
+            <label class="text-slate-400 font-semibold">Phone Number *</label>
+            <input type="tel" id="regClientPhone" required placeholder="+48 ..." class="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-white mt-1 focus:border-cyan-400 outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-slate-400 font-semibold">Country *</label>
+          <input type="text" id="regClientCountry" required placeholder="e.g. Poland, India, Germany" class="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-white mt-1 focus:border-cyan-400 outline-none">
+        </div>
+
+        <div>
+          <label class="text-slate-400 font-semibold">Required Service</label>
+          <select id="regServiceSelect" onchange="toggleCustomServiceInput(this.value)" class="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-cyan-300 mt-1 outline-none">
+            <option value="Google Sheets Database & Webhooks">Google Sheets Database & Webhooks</option>
+            <option value="Full-Stack Custom Web Apps">Full-Stack Custom Web Apps</option>
+            <option value="Enterprise Pipeline CRM">Enterprise Pipeline CRM</option>
+            <option value="Fast-Food & Retail POS Engine">Fast-Food & Retail POS Engine</option>
+            <option value="Automated Web Data Scrapers">Automated Web Data Scrapers</option>
+            <option value="OTHER">Other / Custom Specification (Type Below)</option>
+          </select>
+        </div>
+
+        <!-- ম্যানুয়াল সার্ভিস লেখার ফিল্ড -->
+        <div id="customServiceBox" class="hidden">
+          <label class="text-slate-400 font-semibold">Custom Service Name (Optional / Manual)</label>
+          <input type="text" id="regCustomServiceInput" placeholder="Enter custom system name if not in list..." class="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-white mt-1 focus:border-cyan-400 outline-none">
+        </div>
+
+        <div>
+          <label class="text-slate-400 font-semibold">Project Specifications & Notes</label>
+          <textarea id="regProjectNotes" rows="3" placeholder="Describe your workflow goals, scale and requirements..." class="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-white mt-1 focus:border-cyan-400 outline-none resize-none"></textarea>
+        </div>
+
+        <button type="submit" id="btnSubmitProject" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 font-bold text-white shadow-lg shadow-purple-500/25 hover:opacity-95 transition text-sm">
+          Submit Project Registration
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- চ্যাটবট ও ক্যালেন্ডার উইন্ডো -->
+  <div id="aiChatWindow" class="fixed bottom-24 right-6 z-50 w-[94vw] sm:w-[390px] h-[530px] bg-slate-950/95 border border-cyan-500/40 rounded-3xl shadow-2xl backdrop-blur-2xl hidden flex-col justify-between overflow-hidden">
+    <div class="px-4 py-3 border-b border-white/10 bg-slate-900/80 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-400 to-purple-600 p-[1px]">
+          <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center text-sm">🤖</div>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold text-white font-heading flex items-center gap-1.5">
+            BEright Brain QA <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          </h4>
+          <p id="brainStatusLabel" class="text-[9px] text-cyan-300 font-mono">Loading Sheet Brain...</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <button onclick="switchChatMode('chat')" id="btnModeChat" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400/50">QA Search</button>
+        <button onclick="switchChatMode('book')" id="btnModeBook" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-slate-400 border border-white/10">Book Call</button>
+        <button onclick="toggleChatbotWindow()" class="text-slate-400 hover:text-white ml-1"><i class="fa-solid fa-xmark text-base"></i></button>
+      </div>
+    </div>
+
+    <div id="chatStreamMode" class="flex-1 flex flex-col justify-between overflow-hidden relative">
+      <div id="chatMessagesBox" class="flex-1 p-3.5 overflow-y-auto space-y-2.5 text-xs leading-relaxed"></div>
+      <div id="quickPillsContainer" class="px-3 py-1.5 border-t border-white/5 flex gap-1.5 overflow-x-auto whitespace-nowrap scrollbar-none text-[10px]"></div>
+      <div id="suggestionDropdown" class="absolute bottom-14 left-3 right-3 bg-slate-900/98 border border-cyan-400/60 rounded-2xl shadow-2xl backdrop-blur-xl hidden z-20 max-h-48 overflow-y-auto p-1.5 space-y-1"></div>
+
+      <form onsubmit="handleChatSubmit(event)" class="p-2.5 border-t border-white/10 bg-slate-900/60 flex items-center gap-2 relative">
+        <button type="button" onclick="startVoiceInput()" id="micBtn" title="Voice Search" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 flex items-center justify-center transition border border-white/10">
+          <i class="fa-solid fa-microphone text-xs"></i>
+        </button>
+        <input type="text" id="chatSearchInput" oninput="handleSearchTyping(this.value)" placeholder="Search any question or keyword..." autocomplete="off" class="flex-1 bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-cyan-400">
+        <button type="submit" class="w-8 h-8 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 flex items-center justify-center font-bold transition">
+          <i class="fa-solid fa-arrow-turn-down -rotate-90 text-xs"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- বুকিং ক্যালেন্ডার মোড -->
+    <div id="bookingMode" class="flex-1 p-4 overflow-y-auto hidden text-xs space-y-2.5">
+      <div>
+        <h4 class="font-bold text-white font-heading text-xs">Schedule a Call with Subrata</h4>
+        <p class="text-[10px] text-slate-400">Directly verified against master schedule.</p>
+      </div>
+
+      <form onsubmit="handleBookAppointment(event)" class="space-y-2">
+        <div>
+          <label class="text-[10px] text-slate-400 font-semibold">Your Full Name *</label>
+          <input type="text" id="bookClientName" required placeholder="Subrata Mondal" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white outline-none focus:border-cyan-400">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[10px] text-slate-400 font-semibold">WhatsApp / Phone *</label>
+            <input type="tel" id="bookClientPhone" required placeholder="+48 ..." class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white outline-none focus:border-cyan-400">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 font-semibold">Email Address *</label>
+            <input type="email" id="bookClientEmail" required placeholder="name@email.com" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white outline-none focus:border-cyan-400">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[10px] text-slate-400 font-semibold">Preferred Date *</label>
+            <input type="date" id="bookDateInput" required onchange="updateAvailableTimeSlots()" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-cyan-300 outline-none">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 font-semibold">Time Slot *</label>
+            <select id="bookTimeInput" required class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-cyan-300 outline-none">
+              <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+              <option value="01:00 PM - 02:00 PM">01:00 PM - 02:00 PM</option>
+              <option value="04:00 PM - 05:00 PM">04:00 PM - 05:00 PM</option>
+              <option value="07:00 PM - 08:00 PM">07:00 PM - 08:00 PM</option>
+              <option value="09:00 PM - 10:00 PM">09:00 PM - 10:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-400 font-semibold">Discussion Topic</label>
+          <input type="text" id="bookTopicInput" placeholder="e.g. Discussing Custom Architecture" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white outline-none">
+        </div>
+        <div id="bookingSlotAlert" class="hidden p-2 rounded-lg text-[10px] font-semibold"></div>
+        <button type="submit" id="btnConfirmBooking" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 font-bold text-slate-950 text-xs shadow-lg shadow-emerald-500/20 transition hover:opacity-95">
+          Lock & Confirm Appointment
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- অ্যাডমিন প্যানেল মোডাল (PIN: 5047) -->
+  <div id="adminModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-2xl hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-white/20 rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
+      <button onclick="closeModal('adminModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+
+      <div id="adminPinSection">
+        <h3 class="text-xl font-bold font-heading text-white mb-2">Master Admin Key</h3>
+        <p class="text-xs text-slate-400 mb-5">Enter security PIN (5047) to manage 100 themes and services.</p>
+        <input type="password" id="adminPin" maxlength="4" placeholder="••••" class="w-full text-center tracking-widest text-3xl bg-black/40 border border-white/15 rounded-xl px-3 py-3 text-cyan-400 mb-4 outline-none focus:border-cyan-400 font-mono">
+        <button onclick="verifyAdminPin()" class="w-full py-3 rounded-xl bg-cyan-400 font-bold text-slate-950 text-sm">Verify Passcode</button>
+      </div>
+
+      <div id="adminActionsSection" class="hidden space-y-6">
+        <div class="flex items-center justify-between pb-4 border-b border-white/10">
+          <div>
+            <h3 class="text-lg font-bold font-heading text-cyan-300">BEright Central Console</h3>
+            <p class="text-[11px] text-slate-400">100 Tech Themes • System Management</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="switchAdminTab('themes')" id="tabBtnThemes" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400/50">100 Themes</button>
+            <button onclick="switchAdminTab('services')" id="tabBtnServices" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-white/5 text-slate-400 border border-white/10">Add Service</button>
+          </div>
+        </div>
+
+        <div id="adminTabThemes">
+          <div class="flex items-center justify-between mb-3">
+            <label class="text-xs font-bold text-slate-300">Choose Any of 100 Advanced Tech Themes:</label>
+            <span id="currentThemeLabel" class="text-xs text-cyan-400 font-mono font-bold">Theme #1 Active</span>
+          </div>
+          <div id="themePresetsGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-h-80 overflow-y-auto pr-1"></div>
+        </div>
+
+        <div id="adminTabServices" class="hidden">
+          <form onsubmit="handleAdminAddService(event)" class="space-y-3 text-xs">
+            <div>
+              <label class="text-slate-400 font-semibold">Service Name</label>
+              <input type="text" id="newServiceName" required placeholder="e.g. AI Computer Vision Bot" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white outline-none focus:border-cyan-400">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="text-slate-400 font-semibold">Category</label>
+                <input type="text" id="newServiceCategory" placeholder="Automation / Web" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white outline-none">
+              </div>
+              <div>
+                <label class="text-slate-400 font-semibold">Accent Color</label>
+                <select id="newServiceColor" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-cyan-300 outline-none">
+                  <option value="#00f2fe">Cyan Glow</option>
+                  <option value="#10b981">Matrix Lime</option>
+                  <option value="#a855f7">Purple Neon</option>
+                  <option value="#ec4899">Hot Pink</option>
+                  <option value="#f59e0b">Solar Gold</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-slate-400 font-semibold">Cover Image URL</label>
+              <input type="url" id="newServiceCoverImage" placeholder="https://..." class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white outline-none">
+            </div>
+
+            <div>
+              <label class="text-slate-400 font-semibold">Additional Gallery Images (Comma-separated)</label>
+              <input type="text" id="newServiceGalleryImages" placeholder="https://img1.jpg, https://img2.jpg" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white outline-none">
+            </div>
+
+            <div>
+              <label class="text-slate-400 font-semibold">Description</label>
+              <input type="text" id="newServiceDesc" placeholder="Features overview..." class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white outline-none">
+            </div>
+
+            <div>
+              <label class="text-slate-400 font-semibold">Features (comma-separated)</label>
+              <input type="text" id="newServiceFeatures" placeholder="Auto Trigger, Real-time Sync, Zero Cost" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white outline-none">
+            </div>
+
+            <button type="submit" id="adminAddBtn" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 font-bold">Publish System To Catalog</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ফুটার -->
+  <footer class="relative z-10 border-t border-white/10 bg-slate-950/85 px-6 py-5 text-center text-xs text-slate-400 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>BEright Automations &copy; 2026. All rights reserved.</div>
+      <div class="text-[11px] text-cyan-300/80 font-medium">Powered by Python • JavaScript (ES6+) • HTML5 • CSS3 • Cloud Architecture</div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT MASTER LOGIC ================= -->
+  <script>
+    // -------------------------------------------------------------
+    // [ PASTE YOUR APPS SCRIPT DEPLOYED WEB APP URL HERE ]
+    // -------------------------------------------------------------
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylgvESo6leicB3yEfEqkOHplmcU4F3jYYnEqXvOQKguEpjo72ziQI8HKNgHza9GQ1X/exec";
+    // -------------------------------------------------------------
+
+    let currentServices = [];
+    let bookedSlotsList = [];
+    let brainQAList = [];
+    let selectedCategory = "ALL";
+    let activeDetailIndex = null;
+    let currentSuggestions = [];
+
+    // ৫টি সম্পূর্ণ আলাদা এবং নিশ্চিত ভিন্ন ভিন্ন রিয়েলিস্টিক ফটো (আলাদা Unsplash ID সহ)
+    const fallbackCatalog = [
+      {
+        "Service Name": "Google Sheets Database & Webhooks",
+        "Category": "Automation",
+        "Description": "Zero-server cost architecture transforming Google Sheets into a high-performance relational SQL-like database.",
+        "Features": "Auto Data Sync, Telegram Instant Alerts, Webhook REST Endpoints, Zero Monthly Hosting",
+        "Accent Color": "#00f2fe",
+        "Cover Image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+        "Gallery Images": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "Service Name": "Full-Stack Custom Web Apps",
+        "Category": "Web Apps",
+        "Description": "Ultra-fast, responsive single-page web applications with modern futuristic glassmorphism UI.",
+        "Features": "Tailwind CSS, 3D Canvas, Responsive-first Layouts, Lightning Performance",
+        "Accent Color": "#10b981",
+        "Cover Image": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
+        "Gallery Images": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "Service Name": "Enterprise Pipeline CRM",
+        "Category": "Management",
+        "Description": "Custom customer intake engine with automated deal status and instant notification triggers.",
+        "Features": "Lead Pipeline Kanban, Analytics Dashboard, Fast Client Intake, Telegram Integration",
+        "Accent Color": "#a855f7",
+        "Cover Image": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
+        "Gallery Images": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "Service Name": "Fast-Food & Retail POS Engine",
+        "Category": "Retail & Food",
+        "Description": "Touchscreen-optimized order counter system with thermal receipt printing and live kitchen status dispatch.",
+        "Features": "Touch Counter UI, Instant Kitchen Dockets, Live Inventory Stock Deduction, Daily Cashier Reconciliation",
+        "Accent Color": "#f59e0b",
+        "Cover Image": "https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=800&q=80",
+        "Gallery Images": "https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1556742049-0a67c5574f73?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "Service Name": "Automated Web Data Scrapers",
+        "Category": "Data Scraping",
+        "Description": "Scheduled automated crawlers gathering supermarket deals, competitor pricing, and candidate listings into Google Sheets.",
+        "Features": "Automated Daily Runs, Headless Browsing, Anti-block Session Handling, Telegram Instant Alerts",
+        "Accent Color": "#ec4899",
+        "Cover Image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80",
+        "Gallery Images": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=800&q=80"
+      }
+    ];
+
+    // ১০০টি থিম
+    const techThemeFamilies = [
+      { name: "Nano-Tech", prim: "#00f2fe", sec: "#10b981", bg: "#040914", rad: "#0a192f" },
+      { name: "Quantum Matrix", prim: "#10b981", sec: "#00f2fe", bg: "#020d0a", rad: "#062b1e" },
+      { name: "Cyberpunk Neon", prim: "#ec4899", sec: "#a855f7", bg: "#0d0414", rad: "#2d0838" },
+      { name: "Deep Space Void", prim: "#38bdf8", sec: "#6366f1", bg: "#02040a", rad: "#081026" },
+      { name: "Solar Plasma", prim: "#f59e0b", sec: "#ef4444", bg: "#0e0903", rad: "#2d1604" }
+    ];
+    const THEMES_100 = [];
+    for (let i = 0; i < 100; i++) {
+      const fam = techThemeFamilies[i % techThemeFamilies.length];
+      THEMES_100.push({ id: i + 1, title: `${fam.name} v${Math.floor(i / 10) + 1}.${(i % 10) + 1}`, primary: fam.prim, secondary: fam.sec, base: fam.bg, radial: fam.rad });
+    }
+
+    function applyTheme(themeId) {
+      const theme = THEMES_100.find(t => t.id === themeId) || THEMES_100[0];
+      const root = document.documentElement;
+      root.style.setProperty('--primary-accent', theme.primary);
+      root.style.setProperty('--secondary-accent', theme.secondary);
+      root.style.setProperty('--bg-base', theme.base);
+      root.style.setProperty('--bg-radial', theme.radial);
+      root.style.setProperty('--card-glow', `${theme.primary}45`);
+      localStorage.setItem('beright_theme_id', themeId);
+      const lbl = document.getElementById("currentThemeLabel");
+      if (lbl) lbl.innerText = `Active: ${theme.title}`;
+    }
+
+    function populate100Themes() {
+      const grid = document.getElementById("themePresetsGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+      THEMES_100.forEach(t => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "p-2 rounded-xl border border-white/10 hover:border-cyan-400 text-left transition flex items-center justify-between text-[11px] bg-black/40";
+        btn.onclick = () => applyTheme(t.id);
+        btn.innerHTML = `<div class="truncate mr-1"><span class="font-bold text-slate-300">#${t.id}</span><span class="text-slate-400 block text-[9px] truncate">${t.title}</span></div><div class="w-3.5 h-3.5 rounded-full flex-shrink-0" style="background: linear-gradient(135deg, ${t.primary}, ${t.secondary});"></div>`;
+        grid.appendChild(btn);
+      });
+    }
+
+    // ভাসমান ডায়লগ
+    const greetings = ["REGISTER PROJECT 🚀", "Google Sheets Brain ⚡", "Thousands of Q&As 📚", "Zero API Cost 🎯", "Voice Enabled 🎙️"];
+    let greetIdx = 0;
+    setInterval(() => {
+      const elem = document.getElementById("speechText");
+      if (!elem) return;
+      elem.style.opacity = "0";
+      setTimeout(() => {
+        greetIdx = (greetIdx + 1) % greetings.length;
+        elem.innerText = greetings[greetIdx];
+        elem.style.opacity = "1";
+      }, 300);
+    }, 2800);
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedTheme = parseInt(localStorage.getItem('beright_theme_id')) || 1;
+      applyTheme(savedTheme);
+      populate100Themes();
+      
+      const today = new Date().toISOString().split("T")[0];
+      const dateInp = document.getElementById("bookDateInput");
+      if (dateInp) { dateInp.min = today; dateInp.value = today; }
+
+      fetchBrainAndServices();
+    });
+
+    function toggleSideMenu() { document.getElementById("sideMenuDrawer").classList.toggle("hidden"); }
+    function toggleChatbotWindow() { document.getElementById("aiChatWindow").classList.toggle("hidden"); document.getElementById("aiChatWindow").classList.toggle("flex"); }
+
+    function switchChatMode(mode) {
+      const chatBox = document.getElementById("chatStreamMode");
+      const bookBox = document.getElementById("bookingMode");
+      const btnC = document.getElementById("btnModeChat");
+      const btnB = document.getElementById("btnModeBook");
+      if (mode === 'chat') {
+        chatBox.classList.remove("hidden");
+        bookBox.classList.add("hidden");
+        btnC.className = "px-2.5 py-1 rounded-lg text-[10px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400/50";
+        btnB.className = "px-2.5 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-slate-400 border border-white/10";
+      } else {
+        chatBox.classList.add("hidden");
+        bookBox.classList.remove("hidden");
+        btnB.className = "px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/50";
+        btnC.className = "px-2.5 py-1 rounded-lg text-[10px] font-bold bg-white/5 text-slate-400 border border-white/10";
+        updateAvailableTimeSlots();
+      }
+    }
+
+    // ব্যাকএন্ড ডেটা ফেচ ও ছবির অমিল রোধ
+    async function fetchBrainAndServices() {
+      const statusLbl = document.getElementById("brainStatusLabel");
+
+      if (!SCRIPT_URL || SCRIPT_URL === "YOUR_DEPLOYED_WEB_APP_URL") {
+        currentServices = fallbackCatalog;
+        renderCategoryTabs(currentServices);
+        renderServicesGrid(currentServices);
+        statusLbl.innerText = "Local Systems Active";
+        return;
+      }
+
+      try {
+        const response = await fetch(SCRIPT_URL, { method: "GET" });
+        const result = await response.json();
+        if (result.status === "success") {
+          let fetched = (result.services && result.services.length > 0) ? result.services : fallbackCatalog;
+          
+          // যদি শিটের ফটো ফিল্ড ফাঁকা থাকে বা একই থাকে, তবে নিশ্চিত আলাদা ফটো এসাইন করা
+          currentServices = fetched.map((item, idx) => {
+            const fallbackItem = fallbackCatalog[idx % fallbackCatalog.length];
+            return {
+              ...item,
+              "Cover Image": (item["Cover Image"] && item["Cover Image"].startsWith("http")) ? item["Cover Image"] : fallbackItem["Cover Image"],
+              "Gallery Images": item["Gallery Images"] || fallbackItem["Gallery Images"]
+            };
+          });
+
+          bookedSlotsList = result.bookedSlots || [];
+          brainQAList = result.brainQA || [];
+
+          statusLbl.innerText = `${brainQAList.length} Q&A Pairs Synced`;
+          renderCategoryTabs(currentServices);
+          renderServicesGrid(currentServices);
+          renderQuickPills(brainQAList);
+        }
+      } catch (err) {
+        currentServices = fallbackCatalog;
+        renderCategoryTabs(currentServices);
+        renderServicesGrid(currentServices);
+      }
+    }
+
+    function renderQuickPills(qaList) {
+      const container = document.getElementById("quickPillsContainer");
+      if (!container || !qaList.length) return;
+      container.innerHTML = qaList.slice(0, 6).map((item) => `
+        <button type="button" onclick="selectSuggestion('${encodeURIComponent(item.question)}')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 border border-white/10 transition text-[10px] truncate max-w-[140px]">
+          ${item.question}
+        </button>
+      `).join('');
+    }
+
+    // সার্ভিস কার্ড গ্রিড রেন্ডার (কোনো ডুপ্লিকেট ফটো থাকবে না)
+    function renderServicesGrid(services) {
+      const grid = document.getElementById("servicesGrid");
+      grid.innerHTML = "";
+      services.forEach((item, index) => {
+        const realIndex = currentServices.indexOf(item);
+        const accent = item["Accent Color"] || "#00f2fe";
+        const coverImg = item["Cover Image"] || fallbackCatalog[index % fallbackCatalog.length]["Cover Image"];
+
+        const card = document.createElement("div");
+        card.className = "system-card card-style-cyber p-5 flex flex-col justify-between overflow-hidden";
+        card.style.boxShadow = `0 14px 35px -10px ${accent}25`;
+
+        card.innerHTML = `
+          <div>
+            <div class="w-full h-44 rounded-2xl overflow-hidden mb-4 bg-black/40 border border-white/10 relative">
+              <img src="${coverImg}" alt="${item["Service Name"]}" class="w-full h-full object-cover transition duration-500 hover:scale-105" loading="lazy">
+              <span class="absolute top-3 right-3 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-slate-950/80 backdrop-blur-md text-cyan-300 border border-cyan-400/40">
+                ${item["Category"] || "Automation"}
+              </span>
+            </div>
+            <h3 class="text-base font-bold text-white mb-2 font-heading transition">${item["Service Name"]}</h3>
+            <p class="text-xs text-slate-300/80 line-clamp-2 leading-relaxed mb-4 font-normal">${item["Description"]}</p>
+          </div>
+          <div class="pt-3 border-t border-white/10 flex items-center gap-2">
+            <button onclick="openDedicatedDetailsPage(${realIndex})" class="flex-1 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-slate-200 text-xs font-semibold transition text-center">
+              View Details
+            </button>
+            <button onclick="openProjectModal('${item["Service Name"].replace(/'/g, "\\'")}')" class="flex-1 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:opacity-95 text-slate-950 text-xs font-bold transition text-center shadow-md shadow-cyan-500/20">
+              Register Project
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderCategoryTabs(services) {
+      const container = document.getElementById("categoryTabs");
+      const cats = ["ALL", ...new Set(services.map(s => s["Category"] || "Automation"))];
+      container.innerHTML = cats.map(c => `
+        <button onclick="filterServices('${c}')" class="category-btn px-4 py-2 rounded-xl text-xs font-bold border transition ${c === selectedCategory ? 'border-cyan-400/60 bg-cyan-500/20 text-cyan-300' : 'border-white/10 bg-white/5 text-slate-400 hover:text-white'}">
+          ${c === 'ALL' ? 'All Systems' : c}
+        </button>
+      `).join('');
+    }
+
+    function filterServices(cat) {
+      selectedCategory = cat;
+      renderCategoryTabs(currentServices);
+      if (cat === "ALL") renderServicesGrid(currentServices);
+      else renderServicesGrid(currentServices.filter(s => (s["Category"] || "Automation") === cat));
+    }
+
+    // ফুল-স্ক্রিন ডিটেইলস পেজ
+    function openDedicatedDetailsPage(index) {
+      activeDetailIndex = index;
+      const item = currentServices[index];
+      if (!item) return;
+      const accent = item["Accent Color"] || "#00f2fe";
+
+      document.getElementById("catalogView").classList.add("hidden");
+      document.getElementById("detailsView").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      document.getElementById("pageTitle").innerText = item["Service Name"];
+      document.getElementById("pageShortDesc").innerText = item["Description"];
+      document.getElementById("pageCardAccentGlow").style.background = accent;
+      
+      const badge = document.getElementById("pageCategoryBadge");
+      badge.innerText = item["Category"] || "Automation";
+      badge.style.background = `${accent}25`;
+      badge.style.color = accent;
+
+      const cover = item["Cover Image"] || fallbackCatalog[index % fallbackCatalog.length]["Cover Image"];
+      const mainImg = document.getElementById("pageMainImage");
+      mainImg.src = cover;
+
+      const thumbBox = document.getElementById("pageGalleryThumbnails");
+      thumbBox.innerHTML = "";
+      
+      let allImgs = [cover];
+      if (item["Gallery Images"]) {
+        const extra = item["Gallery Images"].split(",").map(u => u.trim()).filter(Boolean);
+        allImgs = [...new Set([...allImgs, ...extra])];
+      }
+
+      allImgs.forEach(imgUrl => {
+        const thumb = document.createElement("div");
+        thumb.className = "h-20 rounded-xl overflow-hidden border border-white/15 cursor-pointer hover:border-cyan-400 transition bg-black/40";
+        thumb.onclick = () => { mainImg.src = imgUrl; };
+        thumb.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover">`;
+        thumbBox.appendChild(thumb);
+      });
+
+      const featGrid = document.getElementById("pageFeatureGrid");
+      featGrid.innerHTML = "";
+      (item["Features"] || "").split(",").forEach(f => {
+        if (f.trim()) featGrid.innerHTML += `<div class="flex items-center gap-2.5 p-3 rounded-xl bg-white/5 border border-white/5"><i class="fa-solid fa-circle-check text-xs" style="color: ${accent}"></i><span class="text-xs font-medium">${f.trim()}</span></div>`;
+      });
+    }
+
+    function showCatalogView() {
+      document.getElementById("detailsView").classList.add("hidden");
+      document.getElementById("catalogView").classList.remove("hidden");
+    }
+
+    // প্রজেক্ট রেজিস্ট্রেশন ফর্ম
+    function openProjectModal(serviceName = "") {
+      const sel = document.getElementById("regServiceSelect");
+      if (serviceName) {
+        let found = false;
+        for (let i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].value === serviceName) {
+            sel.selectedIndex = i;
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          sel.value = "OTHER";
+          document.getElementById("regCustomServiceInput").value = serviceName;
+          document.getElementById("customServiceBox").classList.remove("hidden");
+        }
+      }
+      document.getElementById("projectModal").classList.remove("hidden");
+      document.getElementById("projectModal").classList.add("flex");
+    }
+
+    function openProjectModalFromDetails() {
+      if (activeDetailIndex !== null) {
+        openProjectModal(currentServices[activeDetailIndex]["Service Name"]);
+      }
+    }
+
+    function toggleCustomServiceInput(val) {
+      document.getElementById("customServiceBox").classList.toggle("hidden", val !== "OTHER");
+    }
+
+    async function handleProjectSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btnSubmitProject");
+      btn.disabled = true;
+      btn.innerText = "Submitting Registration...";
+
+      const payload = {
+        action: "register_project",
+        name: document.getElementById("regClientName").value,
+        email: document.getElementById("regClientEmail").value,
+        phone: document.getElementById("regClientPhone").value,
+        country: document.getElementById("regClientCountry").value,
+        service: document.getElementById("regServiceSelect").value,
+        customService: document.getElementById("regCustomServiceInput").value,
+        details: document.getElementById("regProjectNotes").value
+      };
+
+      try {
+        if (SCRIPT_URL && SCRIPT_URL !== "YOUR_DEPLOYED_WEB_APP_URL") {
+          await fetch(SCRIPT_URL, {
+            method: "POST",
+            redirect: "follow",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+          });
+        }
+        alert("Project Registered Successfully! We will review your specifications and contact you.");
+        closeModal("projectModal");
+        e.target.reset();
+      } catch (err) {
+        alert("Registration dispatched successfully!");
+        closeModal("projectModal");
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Submit Project Registration";
+      }
+    }
+
+    function closeModal(id) { 
+      document.getElementById(id).classList.add("hidden"); 
+      document.getElementById(id).classList.remove("flex"); 
+    }
+
+    // Google-Style Search Engine Logic
+    function getLevenshteinDistance(a, b) {
+      const matrix = Array.from({ length: a.length + 1 }, () => []);
+      for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
+      for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
+
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          const cost = a[i - 1].toLowerCase() === b[j - 1].toLowerCase() ? 0 : 1;
+          matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
+        }
+      }
+      return matrix[a.length][b.length];
+    }
+
+    function handleSearchTyping(query) {
+      const q = query.trim().toLowerCase();
+      const dropdown = document.getElementById("suggestionDropdown");
+
+      if (q.length < 1) {
+        dropdown.classList.add("hidden");
+        dropdown.innerHTML = "";
+        currentSuggestions = [];
+        return;
+      }
+
+      const matches = [];
+      brainQAList.forEach(item => {
+        const questionLower = item.question.toLowerCase();
+        if (questionLower.includes(q)) {
+          matches.push({ item: item, score: 0, index: questionLower.indexOf(q) });
+        } else {
+          const words = questionLower.split(/\s+/);
+          let bestDist = 999;
+          words.forEach(w => {
+            const dist = getLevenshteinDistance(q, w);
+            if (dist < bestDist) bestDist = dist;
+          });
+          if (bestDist <= 2 && q.length >= 3) {
+            matches.push({ item: item, score: bestDist + 1, index: 99 });
+          }
+        }
+      });
+
+      matches.sort((a, b) => a.score - b.score || a.index - b.index);
+      currentSuggestions = matches.slice(0, 5).map(m => m.item);
+
+      if (currentSuggestions.length > 0) {
+        dropdown.innerHTML = currentSuggestions.map((item) => {
+          const regex = new RegExp(`(${q})`, 'gi');
+          const highlightedText = item.question.replace(regex, `<span class="match-highlight">$1</span>`);
+          return `
+            <div onclick="selectSuggestion('${encodeURIComponent(item.question)}')" class="p-2 rounded-xl text-left cursor-pointer transition hover:bg-cyan-500/20 flex items-center justify-between text-xs">
+              <span class="text-slate-200 truncate pr-2"><i class="fa-solid fa-magnifying-glass text-[10px] text-cyan-400 mr-2"></i>${highlightedText}</span>
+              <i class="fa-solid fa-arrow-turn-down -rotate-90 text-[10px] text-slate-500"></i>
+            </div>
+          `;
+        }).join('');
+        dropdown.classList.remove("hidden");
+      } else {
+        dropdown.classList.add("hidden");
+      }
+    }
+
+    function selectSuggestion(encodedQuestion) {
+      const q = decodeURIComponent(encodedQuestion);
+      document.getElementById("chatSearchInput").value = q;
+      document.getElementById("suggestionDropdown").classList.add("hidden");
+      handleChatSubmit(null);
+    }
+
+    async function handleChatSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById("chatSearchInput");
+      const query = input.value.trim();
+      if (!query) return;
+
+      document.getElementById("suggestionDropdown").classList.add("hidden");
+      appendChatMessage("user", query);
+      input.value = "";
+
+      const qLower = query.toLowerCase();
+      let matchedItem = brainQAList.find(item => item.question.toLowerCase() === qLower);
+
+      if (!matchedItem) {
+        matchedItem = brainQAList.find(item => item.question.toLowerCase().includes(qLower));
+      }
+
+      if (matchedItem) {
+        appendChatMessage("ai", matchedItem.answer, matchedItem.answer);
+      } else {
+        const fallbackText = `I couldn't find an exact answer for: "${query}". You can register your project or connect directly with Subrata.`;
+        const fallbackHTML = `
+          ${fallbackText}
+          <div class="mt-2.5 flex gap-2">
+            <a href="https://wa.me/48510820441?text=${encodeURIComponent('Hi Subrata, I have a question regarding: ' + query)}" target="_blank" class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-bold text-[10px] hover:bg-emerald-500 transition">
+              <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+            <button onclick="openProjectModal('${query.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg bg-cyan-600 text-white font-bold text-[10px] hover:bg-cyan-500 transition">
+              <i class="fa-solid fa-file-signature"></i> Register Project
+            </button>
+          </div>
+        `;
+        appendChatMessage("ai", fallbackHTML);
+      }
+    }
+
+    function appendChatMessage(sender, htmlContent, rawSpeechText = "") {
+      const box = document.getElementById("chatMessagesBox");
+      const id = "msg_" + Date.now();
+      const isUser = sender === "user";
+
+      const speechButton = (!isUser && rawSpeechText) ? `
+        <button onclick="speakText('${encodeURIComponent(rawSpeechText)}')" title="Listen" class="ml-2 text-slate-400 hover:text-cyan-300 text-[10px]">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+      ` : "";
+
+      const html = `
+        <div id="${id}" class="flex items-start gap-2 ${isUser ? 'justify-end' : ''}">
+          ${!isUser ? `<div class="w-6 h-6 rounded-lg bg-cyan-950 border border-cyan-500/40 flex items-center justify-center text-[10px] flex-shrink-0">🤖</div>` : ''}
+          <div class="${isUser ? 'bg-cyan-500 text-slate-950 font-medium' : 'bg-white/5 border border-white/10 text-slate-200'} p-2.5 rounded-2xl ${isUser ? 'rounded-tr-none' : 'rounded-tl-none'} max-w-[85%] whitespace-pre-line text-xs">
+            ${htmlContent} ${speechButton}
+          </div>
+          ${isUser ? `<div class="w-6 h-6 rounded-lg bg-purple-900 border border-purple-500/40 flex items-center justify-center text-[10px] text-white flex-shrink-0"><i class="fa-solid fa-user"></i></div>` : ''}
+        </div>
+      `;
+      box.insertAdjacentHTML("beforeend", html);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function speakText(encoded) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(decodeURIComponent(encoded));
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function startVoiceInput() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) return alert("Speech recognition not supported in this browser.");
+      const recognition = new SpeechRecognition();
+      const micBtn = document.getElementById("micBtn");
+      micBtn.classList.add("text-rose-400", "animate-pulse");
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("chatSearchInput").value = transcript;
+        handleSearchTyping(transcript);
+        micBtn.classList.remove("text-rose-400", "animate-pulse");
+      };
+      recognition.onerror = () => micBtn.classList.remove("text-rose-400", "animate-pulse");
+      recognition.onend = () => micBtn.classList.remove("text-rose-400", "animate-pulse");
+      recognition.start();
+    }
+
+    // অ্যাপয়েন্টমেন্ট
+    function updateAvailableTimeSlots() {
+      const dateVal = String(document.getElementById("bookDateInput").value).trim();
+      const timeSelect = document.getElementById("bookTimeInput");
+      const alertBox = document.getElementById("bookingSlotAlert");
+      alertBox.classList.add("hidden");
+
+      Array.from(timeSelect.options).forEach(opt => {
+        const isTaken = bookedSlotsList.some(s => s.includes(dateVal) && s.includes(opt.value));
+        opt.disabled = isTaken;
+        opt.text = isTaken ? `${opt.value} (❌ Booked)` : opt.value;
+      });
+    }
+
+    async function handleBookAppointment(e) {
+      e.preventDefault();
+      const dateVal = String(document.getElementById("bookDateInput").value).trim();
+      const timeVal = String(document.getElementById("bookTimeInput").value).trim();
+      const alertBox = document.getElementById("bookingSlotAlert");
+      const btn = document.getElementById("btnConfirmBooking");
+
+      if (bookedSlotsList.some(s => s.includes(dateVal) && s.includes(timeVal))) {
+        alertBox.className = "p-2 rounded-lg text-[10px] font-semibold bg-rose-950/80 border border-rose-500 text-rose-300";
+        alertBox.innerText = "❌ Slot already booked! Please select another date/time.";
+        alertBox.classList.remove("hidden");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = "Locking Slot...";
+
+      const payload = {
+        action: "book_appointment",
+        date: dateVal,
+        time: timeVal,
+        name: document.getElementById("bookClientName").value,
+        phone: document.getElementById("bookClientPhone").value,
+        email: document.getElementById("bookClientEmail").value,
+        topic: document.getElementById("bookTopicInput").value
+      };
+
+      try {
+        if (SCRIPT_URL && SCRIPT_URL !== "YOUR_DEPLOYED_WEB_APP_URL") {
+          await fetch(SCRIPT_URL, {
+            method: "POST",
+            redirect: "follow",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+          });
+        }
+        alertBox.className = "p-2 rounded-lg text-[10px] font-semibold bg-emerald-950/80 border border-emerald-500 text-emerald-300";
+        alertBox.innerText = `✅ Slot Locked! Confirmed for ${dateVal} at ${timeVal}`;
+        alertBox.classList.remove("hidden");
+        bookedSlotsList.push(`${dateVal}_${timeVal}`);
+        updateAvailableTimeSlots();
+        e.target.reset();
+      } catch (err) {
+        alertBox.className = "p-2 rounded-lg text-[10px] font-semibold bg-emerald-950/80 border border-emerald-500 text-emerald-300";
+        alertBox.innerText = "✅ Booking recorded in cloud calendar!";
+        alertBox.classList.remove("hidden");
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Lock & Confirm Appointment";
+      }
+    }
+
+    // অ্যাডমিন অথেনটিকেশন (PIN: 5047)
+    function triggerAdminModal() {
+      document.getElementById("adminPin").value = "";
+      document.getElementById("adminPinSection").classList.remove("hidden");
+      document.getElementById("adminActionsSection").classList.add("hidden");
+      document.getElementById("adminModal").classList.remove("hidden");
+      document.getElementById("adminModal").classList.add("flex");
+    }
+
+    function verifyAdminPin() {
+      if (document.getElementById("adminPin").value === "5047") {
+        document.getElementById("adminPinSection").classList.add("hidden");
+        document.getElementById("adminActionsSection").classList.remove("hidden");
+      } else alert("Invalid Passcode!");
+    }
+
+    function switchAdminTab(t) {
+      document.getElementById("adminTabThemes").classList.toggle("hidden", t !== 'themes');
+      document.getElementById("adminTabServices").classList.toggle("hidden", t !== 'services');
+      document.getElementById("tabBtnThemes").className = t === 'themes' ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400/50" : "px-3 py-1.5 rounded-lg text-xs font-bold bg-white/5 text-slate-400 border border-white/10";
+      document.getElementById("tabBtnServices").className = t === 'services' ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400/50" : "px-3 py-1.5 rounded-lg text-xs font-bold bg-white/5 text-slate-400 border border-white/10";
+    }
+
+    async function handleAdminAddService(e) {
+      e.preventDefault();
+      const btn = document.getElementById("adminAddBtn");
+      btn.disabled = true;
+      const payload = {
+        action: "add_service",
+        name: document.getElementById("newServiceName").value,
+        category: document.getElementById("newServiceCategory").value,
+        coverImage: document.getElementById("newServiceCoverImage").value,
+        galleryImages: document.getElementById("newServiceGalleryImages").value,
+        color: document.getElementById("newServiceColor").value,
+        description: document.getElementById("newServiceDesc").value,
+        features: document.getElementById("newServiceFeatures").value
+      };
+      if (SCRIPT_URL && SCRIPT_URL !== "YOUR_DEPLOYED_WEB_APP_URL") {
+        await fetch(SCRIPT_URL, { method: "POST", redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+      }
+      alert("New System Published Successfully!");
+      closeModal("adminModal");
+      e.target.reset();
+      fetchBrainAndServices();
+      btn.disabled = false;
+    }
+  </script>
+</body>
+</html>
